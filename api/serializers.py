@@ -5,12 +5,19 @@ from account.models import User
 
 
 class UserActionSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = UserAction
-        fields = "__all__"
+        fields = [
+            'action',
+            'numbers',
+            'numbers_sets',
+            'time_duration',
+            ]
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        return UserAction(user=user, **validated_data)
 
 class ActionSerializer(serializers.ModelSerializer):
     class Meta:
