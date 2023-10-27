@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import CreateAction, CreateUserAction
+from .views import CreateUserAction, ListUserAction
 from rest_framework.routers import DefaultRouter
 
 
@@ -9,7 +9,7 @@ from rest_framework.routers import DefaultRouter
 #router.register("create-user-action/", CreateUserAction, basename='user-action')
 urlpatterns = [
     #path("", include(router.urls)),
-    path("action/create/", CreateAction.as_view()),
-    path("user/", CreateUserAction.as_view())
+    path("action/create/", CreateUserAction.as_view()),
+    path("list/", ListUserAction.as_view())
 
 ]
