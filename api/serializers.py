@@ -1,9 +1,29 @@
 from rest_framework import serializers
-from .models import UserAction, Action
+from .models import UserAction, Action, UserProgram
+from account.models import Coach, Sportman
 from django.contrib.auth import get_user_model
 from account.models import User
 
 
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['email', 'name']
+
+
+class CoachSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Coach
+        fields = ['user_id', 'user']
+
+
+class CoachChooseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coach
+        fields = ["user_id"]
 class UserActionSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -15,11 +35,17 @@ class UserActionSerializer(serializers.ModelSerializer):
             'time_duration',
             ]
 
-    def create(self, validated_data):
-        user = self.context['request'].user
-        return UserAction(user=user, **validated_data)
 
-class ActionSerializer(serializers.ModelSerializer):
+class UserProgramSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = Action
-        fields = "__all__"
+        model = UserProgram
+        fields = [
+            'action',
+            'day',
+            'numbers',
+            'numbers_sets',
+            'time_duration2',
+            ]
+
+

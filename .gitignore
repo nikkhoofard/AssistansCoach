@@ -2,10 +2,12 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+http-test/*
+*/migrations/*
+api/migrations/*
 # C extensions
 *.so
-
+temp.py
 # Distribution / packaging
 .Python
 build/

@@ -1,15 +1,17 @@
 from django.urls import path, include
 from . import views
-from .views import CreateUserAction, ListUserAction
-from rest_framework.routers import DefaultRouter
+from .views import CreateUserAction,\
+    ListUserAction, CreateUserProgram, \
+    ListUserProgram, CoachListView,ChooseCoachView
 
-
-#router = DefaultRouter()
-#router.register("create/", CreateAction, basename='action')
-#router.register("create-user-action/", CreateUserAction, basename='user-action')
 urlpatterns = [
-    #path("", include(router.urls)),
-    path("action/create/", CreateUserAction.as_view()),
-    path("list/", ListUserAction.as_view())
+    path("useraction/create/", CreateUserAction.as_view()),
+    path("useraction/list/", ListUserAction.as_view()),
+
+    path("coach/search/", CoachListView.as_view()),
+    path("coach/choose/", ChooseCoachView.as_view()),
+
+    path("Program/create/", CreateUserProgram.as_view()),
+    path("Program/list/", ListUserProgram.as_view()),
 
 ]
