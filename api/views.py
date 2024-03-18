@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from .models import Action, UserAction, UserProgram
 from .serializers import UserActionSerializer,\
-    UserProgramSerializer, CoachSerializer, CoachChooseSerializer
+    UserProgramSerializer, CoachSerializer, CoachChooseSerializer,\
+    SportmanSerializer, CoachSeeSportmanActionSerializer
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.response import Response
 from account.models import Coach, Sportman
@@ -85,3 +86,24 @@ class ChooseCoachView(CreateAPIView):
         sportman.coachs.add(coach)
         return Response({'message': 'Coach selected successfully'},
                         status=status.HTTP_201_CREATED)
+
+#todo : in this class auto fill coach_id with user.id and permision
+#only for coach
+class SportmanCoachListView(ListAPIView):
+    serializer_class = SportmanSerializer
+
+    def get_queryset(self):
+        coach_id = self.kwargs['coach_id']
+        coach = Coach.objects.get(pk=coach_id)
+        return coach.sportmans.all()
+
+
+#todo : add permision and filter for coach and sportman
+class CoachSeeSportmanAction(ListAPIView):
+    serializer_class = CoachSeeSportmanActionSerializer
+
+    def get_queryset(self):
+
+        sportman = self.kwargs['sportman_id']
+        list_sportman = UserAction.objects.filter(user=sportman)
+        return list_sportman

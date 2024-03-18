@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 timedelta_object = datetime.timedelta(microseconds=10)
 
+
 def validate_number(value):
     if 0 < value < 999:
         return value
@@ -82,10 +83,10 @@ class UserProgram(models.Model):
     def __str__(self):
         return f"PROGRAM OF{self.user} FOR {self.day} ----"
 
+
 class Master(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     field = models.CharField(max_length=50)
-
 
     def __str__(self):
         return f"Master in {self.field} name is : {self.user}"

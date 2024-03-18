@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
             Coach.objects.create(user=user)
         return user
     
-    def create_superuser(self, email, name, is_admin=True, password=None):
+    def create_superuser(self, email, name, is_admin=True, password=None, is_coach=True, is_sportman=True):
         """
         Creates and saves a Superuser with the given email, name and password.
         """
@@ -35,7 +35,9 @@ class UserManager(BaseUserManager):
             email=email,
             password=password,
             name=name,
-            is_admin=is_admin
+            is_admin=is_admin,
+            is_coach=True,
+            is_sportman=True
         )
         user.is_admin = True
         user.save(using=self._db)
