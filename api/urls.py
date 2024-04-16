@@ -12,7 +12,7 @@ urlpatterns = [
     path("coach/search/", CoachListView.as_view()),
     path("coach/choose/", ChooseCoachView.as_view()),
 
-    path("coach/<int:coach_id>/sportmans/", SportmanCoachListView.as_view()),
+    path("coach/sportmans/", SportmanCoachListView.as_view()),
     path("coach/sportmans/details/<int:sportman_id>/", CoachSeeSportmanAction.as_view()),
 
     path("Program/create/", CreateUserProgram.as_view()),

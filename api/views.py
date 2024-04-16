@@ -74,7 +74,7 @@ class CoachListView(ListAPIView):
 
 class ChooseCoachView(CreateAPIView):
     serializer_class = CoachChooseSerializer
-    # Define a serializer for selecting a teacher
+    # Define a serializer for selecting a coach
 
     def create(self, request, *args, **kwargs):
         sportman = Sportman.objects.get(user=request.user)
@@ -91,14 +91,15 @@ class ChooseCoachView(CreateAPIView):
 #only for coach
 class SportmanCoachListView(ListAPIView):
     serializer_class = SportmanSerializer
-
     def get_queryset(self):
-        coach_id = self.kwargs['coach_id']
-        coach = Coach.objects.get(pk=coach_id)
+        user = self.request.user
+        coach = Coach.objects.get(pk=user)
         return coach.sportmans.all()
 
 
 #todo : add permision and filter for coach and sportman
+#نیاز داریم اینجا اطلاعات جزئی ورزشکار نمایش داده بشه با این
+# شرط که اون ورزشکار تحت نظر اون مربی باشه
 class CoachSeeSportmanAction(ListAPIView):
     serializer_class = CoachSeeSportmanActionSerializer
 
