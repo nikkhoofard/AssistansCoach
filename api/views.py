@@ -11,6 +11,7 @@ from .serializers import UserActionSerializer,\
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.response import Response
 from account.models import Coach, Sportman
+from .permissions  import IsCoachUser, IsStudentOfTeacher
 
 
 class CreateUserAction(CreateAPIView):
@@ -37,6 +38,7 @@ class ListUserAction(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
+        print(self.request.user.is_coach)
         return self.queryset.filter(user=user)
 
 
@@ -87,10 +89,15 @@ class ChooseCoachView(CreateAPIView):
         return Response({'message': 'Coach selected successfully'},
                         status=status.HTTP_201_CREATED)
 
+
+
 #todo : in this class auto fill coach_id with user.id and permision
 #only for coach
+
+
 class SportmanCoachListView(ListAPIView):
     serializer_class = SportmanSerializer
+
     def get_queryset(self):
         user = self.request.user
         coach = Coach.objects.get(pk=user)
@@ -100,11 +107,26 @@ class SportmanCoachListView(ListAPIView):
 #todo : add permision and filter for coach and sportman
 #نیاز داریم اینجا اطلاعات جزئی ورزشکار نمایش داده بشه با این
 # شرط که اون ورزشکار تحت نظر اون مربی باشه
+
 class CoachSeeSportmanAction(ListAPIView):
     serializer_class = CoachSeeSportmanActionSerializer
+    permission_classes = [IsCoachUser, IsStudentOfTeacher]
 
     def get_queryset(self):
+        sportman_user_id = self.kwargs.get('sportman_user_id')
+        coach_id = self.request.user
 
-        sportman = self.kwargs['sportman_id']
-        list_sportman = UserAction.objects.filter(user=sportman)
-        return list_sportman
+        sportman = UserAction.objects.filter(user_id=sportman_user_id)
+        return sportman
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+
+        if request.user.is_authenticated and request.user.is_coach:
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({
+                "error": "You are not authorized to access this information."},
+                            status=403)
+

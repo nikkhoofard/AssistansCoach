@@ -38,7 +38,7 @@ class SportmanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sportman
-        fields = ['user']
+        fields = ['user_id', 'id', 'user']
 
 
 class UserActionSerializer(serializers.ModelSerializer):

@@ -88,11 +88,10 @@ class User(AbstractBaseUser):
         return self.is_admin
 
 
-
 class Coach(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-
-
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
+                                primary_key=True)
 
     def __str__(self):
         return f" username is {self.user.name}"
