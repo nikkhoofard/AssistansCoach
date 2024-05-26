@@ -26,6 +26,8 @@ class CreateUserAction(CreateAPIView):
             user=request.user,
             action=Action.objects.get(name=user_input_data['action']),
             numbers=user_input_data['numbers'],
+            weight=user_input_data['weight'],
+            score=user_input_data["score"],
             numbers_sets=user_input_data['numbers_sets'],
             time_duration=(datetime.timedelta(seconds=int(user_input_data['time_duration']))),
         )
@@ -56,8 +58,11 @@ class CreateUserProgram(CreateAPIView):
             day=user_input_data['day'],
             action=Action.objects.get(name=user_input_data['action']),
             numbers=user_input_data['numbers'],
+            weight=user_input_data['weight'],
+            score=user_input_data["score"],
             numbers_sets=user_input_data['numbers_sets'],
-            time_duration2=(datetime.timedelta(seconds=int(user_input_data['time_duration']))),
+            time_duration2=(datetime.timedelta(
+                seconds=int(user_input_data['time_duration']))),
         )
         instance.save()
         serializer = UserProgramSerializer(instance)

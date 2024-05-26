@@ -45,7 +45,7 @@ class UserAction(models.Model):
     numbers = models.IntegerField(validators=[validate_number])
     numbers_sets = models.IntegerField(validators=[validate_set])
     weight = models.IntegerField(default=0, on_delete=models.CASCADE)
-
+    score = models.IntegerField(default=0, blank=True)
     time_duration = models.DurationField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)

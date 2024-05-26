@@ -48,6 +48,8 @@ class UserActionSerializer(serializers.ModelSerializer):
         fields = [
             'action',
             'numbers',
+            'weight',
+            'score',
             'numbers_sets',
             'time_duration',
             ]
@@ -62,6 +64,8 @@ class UserProgramSerializer(serializers.ModelSerializer):
             'day',
             'numbers',
             'numbers_sets',
+            'weight',
+            'score',
             'time_duration2',
             ]
 
