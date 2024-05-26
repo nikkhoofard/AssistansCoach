@@ -91,14 +91,18 @@ class User(AbstractBaseUser):
 class Coach(models.Model):
     user = models.OneToOneField(User,
                                 on_delete=models.CASCADE,
-                                primary_key=True)
+                                primary_key=True,
+                                related_name='coach_profile')
 
     def __str__(self):
-        return f" username is {self.user.name}"
+        return f" coach name is  is {self.user.name}"
 
 
 class Sportman(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
+                                related_name='sportman_profile')
+
     coachs = models.ManyToManyField(Coach, related_name="sportmans")
 
 

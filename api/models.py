@@ -44,6 +44,8 @@ class UserAction(models.Model):
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
     numbers = models.IntegerField(validators=[validate_number])
     numbers_sets = models.IntegerField(validators=[validate_set])
+    weight = models.IntegerField(default=0, on_delete=models.CASCADE)
+
     time_duration = models.DurationField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)

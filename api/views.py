@@ -1,5 +1,6 @@
 import datetime
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
@@ -12,6 +13,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.response import Response
 from account.models import Coach, Sportman
 from .permissions  import IsCoachUser, IsStudentOfTeacher
+
 
 
 class CreateUserAction(CreateAPIView):
@@ -35,6 +37,7 @@ class CreateUserAction(CreateAPIView):
 class ListUserAction(ListAPIView):
     queryset = UserAction.objects.all()
     serializer_class = UserActionSerializer
+    filter_backends = [DjangoFilterBackend]
 
     def get_queryset(self):
         user = self.request.user

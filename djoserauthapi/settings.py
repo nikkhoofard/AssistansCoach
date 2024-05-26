@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'djoser',
     "corsheaders",
     "account",
+    'django_filters',
     "api",
     'messageapp',
 ]
