@@ -5,15 +5,15 @@ from rest_framework.views import APIView
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from .models import Action, UserAction, UserProgram
-from .serializers import UserActionSerializer,\
-    UserProgramSerializer, CoachSerializer, CoachChooseSerializer,\
-    SportmanSerializer, CoachSeeSportmanActionSerializer
+from .models import Action, UserAction, UserProgram, UserProgramName
+from .serializers import UserActionSerializer, \
+    UserProgramSerializer, CoachSerializer, CoachChooseSerializer, \
+    SportmanSerializer, CoachSeeSportmanActionSerializer, \
+    UserProgramNameSerializer
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.response import Response
 from account.models import Coach, Sportman
-from .permissions  import IsCoachUser, IsStudentOfTeacher
-
+from .permissions import IsCoachUser, IsStudentOfTeacher, OwnProgram
 
 
 class CreateUserAction(CreateAPIView):
@@ -40,21 +40,41 @@ class ListUserAction(ListAPIView):
     queryset = UserAction.objects.all()
     serializer_class = UserActionSerializer
     filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['time_created', 'action', 'score']
 
     def get_queryset(self):
-        user = self.request.user
-        print(self.request.user.is_coach)
-        return self.queryset.filter(user=user)
+       user = self.request.user
+       return self.queryset.filter(user=user)
+
+
+class CreateProgramName(CreateAPIView):
+    queryset = UserProgramName.objects.all()
+    serializer_class = UserProgramNameSerializer
+
+    def create(self, request, *args, **kwargs):
+        input_data = request.data
+        instance = UserProgramName(
+            user=request.user,
+            name_program=input_data["name_program"],
+            time_created=datetime.datetime.now())
+        instance.save()
+        serializer = UserProgramNameSerializer(instance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class CreateUserProgram(CreateAPIView):
     queryset = UserProgram.objects.all()
     serializer_class = UserProgramSerializer
+    permission_classes = [OwnProgram]
 
     def create(self, request, *args, **kwargs):
         user_input_data = request.data
+        user = request.user
+
         instance = UserProgram(
-            user=request.user,
+            user=user,
+            user_program_name=UserProgramName.objects.filter(
+             user_id=user.id).get(name_program=user_input_data["user_program_name"]),
             day=user_input_data['day'],
             action=Action.objects.get(name=user_input_data['action']),
             numbers=user_input_data['numbers'],

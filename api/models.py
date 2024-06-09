@@ -44,7 +44,7 @@ class UserAction(models.Model):
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
     numbers = models.IntegerField(validators=[validate_number])
     numbers_sets = models.IntegerField(validators=[validate_set])
-    weight = models.IntegerField(default=0, on_delete=models.CASCADE)
+    weight = models.IntegerField(default=0)
     score = models.IntegerField(default=0, blank=True)
     time_duration = models.DurationField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
@@ -53,6 +53,11 @@ class UserAction(models.Model):
     def __str__(self):
         return f"{self.action}--{self.user}"
 
+
+class UserProgramName(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    name_program = models.CharField(max_length=255, default="sport")
+    time_created = models.DateTimeField(auto_created=True)
 
 class UserProgram(models.Model):
     SATURDAY = "SA"
@@ -73,12 +78,19 @@ class UserProgram(models.Model):
         (Friday, "Friday"),
     ]
 
+    user_program_name = models.ForeignKey(
+        UserProgramName,
+        on_delete=models.CASCADE
+    )
+
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
     day = models.CharField(max_length=50, choices=DAYS, default=SATURDAY)
     numbers = models.IntegerField(validators=[validate_number], blank=True)
     numbers_sets = models.IntegerField(validators=[validate_set], blank=True)
     time_duration2 = models.DurationField(null=True, blank=True)
+    weight = models.IntegerField(default=0)
+    score = models.IntegerField(default=0, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
 

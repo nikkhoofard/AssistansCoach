@@ -1,5 +1,7 @@
 from rest_framework.permissions import BasePermission
 
+from api.models import UserProgramName
+
 
 class IsCoachUser(BasePermission):
     """
@@ -10,8 +12,6 @@ class IsCoachUser(BasePermission):
         return bool(request.user and request.user.is_coach)
 
 
-class IsStudentOfTeacher(BasePermission):
-    from rest_framework import permissions
 
 
 class IsStudentOfTeacher(BasePermission):
@@ -37,3 +37,15 @@ class IsStudentOfTeacher(BasePermission):
                 return False
 
 
+class OwnProgram(BasePermission):
+    def has_permission(self, request, view):
+        program_name = request.data['user_program_name']
+        user = request.user
+
+        print("2", user.id)
+        if UserProgramName.objects.filter(
+            name_program=program_name).filter(user_id=user.id).exists():
+
+            return True
+        print("false")
+        return False
