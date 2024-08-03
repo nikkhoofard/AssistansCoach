@@ -28,7 +28,8 @@ class IsStudentOfTeacher(BasePermission):
                     return False
 
                 # Get the teacher's students
-                coach = request.user.coach
+                print(request.user.coach_profile)
+                coach = request.user.coach_profile
                 print(coach)
                 print(coach.sportmans.filter(id=sportman_id).exists())
                 if coach.sportmans.filter(id=sportman_id).exists():

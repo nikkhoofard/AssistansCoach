@@ -106,3 +106,24 @@ class Sportman(models.Model):
     coachs = models.ManyToManyField(Coach, related_name="sportmans")
 
 
+class DetailSportman(models.Model):
+    user = models.ManyToManyField(User, related_name='user_details')
+
+    weight = models.IntegerField(null=True, blank=True)
+    height = models.IntegerField(null=True, blank=True)
+    neck   = models.IntegerField(null=True, blank=True)
+    arm    = models.IntegerField(null=True, blank=True)
+    chest  = models.IntegerField(null=True, blank=True)
+    Waist  = models.IntegerField(null=True, blank=True)
+    thigh  = models.IntegerField(null=True, blank=True)
+    leg    = models.IntegerField(null=True, blank=True)
+    hip    = models.IntegerField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f" {self.user}--{self.weight}--{self.neck}--{self.arm}-" \
+               f"-{self.chest}--{self.Waist}--" \
+               f"{self.hip}--{self.thigh}--{self.height}--{self.leg}--"

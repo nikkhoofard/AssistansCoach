@@ -74,7 +74,7 @@ class CreateUserProgram(CreateAPIView):
         instance = UserProgram(
             user=user,
             user_program_name=UserProgramName.objects.filter(
-             user_id=user.id).get(name_program=user_input_data["user_program_name"]),
+            user_id=user.id).get(name_program=user_input_data["user_program_name"]),
             day=user_input_data['day'],
             action=Action.objects.get(name=user_input_data['action']),
             numbers=user_input_data['numbers'],
